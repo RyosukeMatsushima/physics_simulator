@@ -1,0 +1,7 @@
+/.python-version
+/SinglePendulum/__pycache__
+/SinglePendulum/data.csv
+/SinglePendulum/.python-version
+/CartPole/__pycache__
+/CartPole/data.csv
+/CartPole/.python-version
