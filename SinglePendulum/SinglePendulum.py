@@ -2,12 +2,25 @@ import numpy as np
 
 class SinglePendulum:
 
-    def __init__(self, theta, theta_dot):
+    def __init__(self, theta, theta_dot, **kwargs):
         self.GRAVITY = 9.81
         self.MASS = 0.3
         self.LENGTH = 0.2 # actually half the pole's length
-        self.INERTIA = (self.MASS * (2 * self.LENGTH)**2)/12
         self.DRAG = 0.001
+
+        for key in kwargs:
+            if key == "mass":
+                self.MASS = kwargs[key]
+                continue
+            if key == "length":
+                self.LENGTH = kwargs[key]
+                continue
+            if key == "drag":
+                self.DRAG = kwargs[key]
+                continue
+            raise TypeError("The required key {key!r} ""are not in kwargs".format(key=key))
+
+        self.INERTIA = (self.MASS * (2 * self.LENGTH)**2)/12
         
         self.state = (theta, theta_dot)
         self.input = 0.

@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 if __name__ == '__main__':
     init_theta = 0.1
     init_theta_dot = 0
-    singlePendulum = SinglePendulum(init_theta, init_theta_dot)
+    singlePendulum = SinglePendulum(init_theta, init_theta_dot, mass=10, length=2, drag=4)
 
     time = 0.
     dt = 10**(-2)
@@ -27,4 +27,5 @@ if __name__ == '__main__':
 
     df.to_csv("./data.csv", index=False)
     df.plot(x='time', y='theta')
+    df.plot(x='time', y='theta_dot')
     plt.show()
