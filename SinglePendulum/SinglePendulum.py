@@ -26,7 +26,7 @@ class SinglePendulum:
         self.input = 0.
 
     def singlependulum_dynamics(self, theta, theta_dot, u):
-        theta_2dot = (self.LENGTH * self.MASS * self.GRAVITY * np.sin(theta) - self.DRAG * theta_dot)/self.INERTIA
+        theta_2dot = (self.LENGTH * self.MASS * self.GRAVITY * np.sin(theta) - self.DRAG * theta_dot + u)/self.INERTIA
 
         return np.array([theta_dot, theta_2dot])
 
