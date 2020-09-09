@@ -14,7 +14,7 @@ class CartPole:
         self.state = (x, x_dot, theta, theta_dot)
         self.input = 0.
 
-    def cartpole_dynamics(self, x, x_dot, theta, theta_dot, u):
+    def dynamics(self, x, x_dot, theta, theta_dot, u):
         alpha = self.MASS_POLE * self.LENGTH_POLE * np.cos(theta)
         A = [[self.MASS_CART + self.MASS_POLE, alpha],
              [alpha, self.INERTIA_POLE + self.MASS_POLE * self.LENGTH_POLE**2]]
