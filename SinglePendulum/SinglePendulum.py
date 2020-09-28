@@ -7,18 +7,7 @@ class SinglePendulum:
         self.MASS = 0.3
         self.LENGTH = 0.2 # actually half the pole's length
         self.DRAG = 0.001
-
-        for key in kwargs:
-            if key == "mass":
-                self.MASS = kwargs[key]
-                continue
-            if key == "length":
-                self.LENGTH = kwargs[key]
-                continue
-            if key == "drag":
-                self.DRAG = kwargs[key]
-                continue
-            raise TypeError("The required key {key!r} ""are not in kwargs".format(key=key))
+        self.set_param(**kwargs)
 
         self.INERTIA = (self.MASS * (2 * self.LENGTH)**2)/12
         
@@ -41,3 +30,19 @@ class SinglePendulum:
         self.state = tuple(current_state + state_dot)
 
         return self.state
+
+    def get_param(self):
+        return {"mass": self.MASS, "length": self.LENGTH, "drag": self.DRAG}
+
+    def set_param(self, **kwargs):
+        for key in kwargs:
+            if key == "mass":
+                self.MASS = kwargs[key]
+                continue
+            if key == "length":
+                self.LENGTH = kwargs[key]
+                continue
+            if key == "drag":
+                self.DRAG = kwargs[key]
+                continue
+            raise TypeError("The required key {key!r} ""are not in kwargs".format(key=key))
