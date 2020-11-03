@@ -46,3 +46,4 @@ class SinglePendulum:
                 self.DRAG = kwargs[key]
                 continue
             raise TypeError("The required key {key!r} ""are not in kwargs".format(key=key))
+        self.INERTIA = (self.MASS * (2 * self.LENGTH)**2)/12
