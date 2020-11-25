@@ -1,23 +1,18 @@
 import numpy as np
 
-class SinglePendulum:
+class SingleCart:
 
-    def __init__(self, theta, theta_dot, **kwargs):
-        self.GRAVITY = 9.81
+    def __init__(self, x, x_dot, **kwargs):
         self.MASS = 0.3
-        self.LENGTH = 0.2 # actually half the pole's length
-        self.DRAG = 0.001
+        self.DRAG = 0.0
         self.set_param(**kwargs)
 
-        self.INERTIA = (self.MASS * (2 * self.LENGTH)**2)/12
-        
-        self.state = (theta, theta_dot)
+        self.state = (x, x_dot)
         self.input = 0.
 
-    def dynamics(self, theta, theta_dot, u):
-        theta_2dot = (self.LENGTH * self.MASS * self.GRAVITY * np.sin(theta) - self.DRAG * theta_dot + u)/self.INERTIA
-
-        return np.array([theta_dot, theta_2dot])
+    def dynamics(self, x, x_dot, u):
+        x_2dot = (u)/self.MASS
+        return np.array([x_dot, x_2dot])
 
     def step(self, dt):
         current_state = np.array(self.state)
@@ -32,18 +27,14 @@ class SinglePendulum:
         return self.state
 
     def get_param(self):
-        return {"mass": self.MASS, "length": self.LENGTH, "drag": self.DRAG}
+        return {"mass": self.MASS, "drag": self.DRAG}
 
     def set_param(self, **kwargs):
         for key in kwargs:
             if key == "mass":
                 self.MASS = kwargs[key]
                 continue
-            if key == "length":
-                self.LENGTH = kwargs[key]
-                continue
             if key == "drag":
                 self.DRAG = kwargs[key]
                 continue
             raise TypeError("The required key {key!r} ""are not in kwargs".format(key=key))
-        self.INERTIA = (self.MASS * (2 * self.LENGTH)**2)/12
