@@ -3,6 +3,7 @@ import numpy as np
 class SingleCart:
 
     def __init__(self, x, x_dot, **kwargs):
+        self.name = "SingleCart"
         self.MASS = 0.3
         self.DRAG = 0.0
         self.set_param(**kwargs)

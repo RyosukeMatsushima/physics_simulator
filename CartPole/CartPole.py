@@ -3,6 +3,7 @@ import numpy as np
 class CartPole:
 
     def __init__(self, x, x_dot, theta, theta_dot, **kwargs):
+        self.name = "CartPole"
         self.GRAVITY = 9.81
         self.MASS_CART = 0.5
         self.MASS_POLE = 0.3

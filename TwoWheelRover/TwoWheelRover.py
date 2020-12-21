@@ -3,6 +3,7 @@ import numpy as np
 class TwoWheelRover:
 
     def __init__(self, X, Y, theta, v, theta_dot, **kwargs):
+        self.name = "TwoWheelRover"
         self.MASS = 0.5
         self.LENGTH = 0.2 # wheel to center of gravity
         self.INERTIA = 0.007
