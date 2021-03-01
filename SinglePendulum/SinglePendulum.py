@@ -3,6 +3,7 @@ import numpy as np
 class SinglePendulum:
 
     def __init__(self, theta, theta_dot, **kwargs):
+        self.name = "SinglePendulum"
         self.GRAVITY = 9.81
         self.MASS = 0.3
         self.LENGTH = 0.2 # actually half the pole's length
