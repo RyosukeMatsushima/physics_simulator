@@ -35,6 +35,20 @@ class DoublePendulum:
 
         return self.state
 
+    def energy(self, theta1, theta1_dot, theta2, theta2_dot):
+        y1 = -self.LENGTH * np.cos(theta1)
+        y2 = -(self.LENGTH * np.cos(theta1) + self.LENGTH * np.cos(theta2))
+
+        x1_dot = self.LENGTH * theta1_dot * np.cos(theta1)
+        y1_dot = self.LENGTH * theta1_dot * np.sin(theta1)
+        x2_dot = self.LENGTH * theta1_dot * np.cos(theta1) + self.LENGTH * theta2_dot * np.cos(theta2)
+        y2_dot = self.LENGTH * theta1_dot * np.sin(theta1) + self.LENGTH * theta2_dot * np.sin(theta2)
+
+        T = self.MASS / 2 * (x1_dot**2 + y1_dot**2) + self.MASS / 2 * (x2_dot**2 + y2_dot**2)
+        U = self.MASS * self.GRAVITY * y1 + self.MASS * self.GRAVITY * y2
+
+        return T + U
+
     def get_param(self):
         return {"mass": self.MASS, "length": self.LENGTH, "drag": self.DRAG}
 
