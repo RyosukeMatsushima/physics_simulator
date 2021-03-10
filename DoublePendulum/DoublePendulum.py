@@ -14,6 +14,8 @@ class DoublePendulum:
         self.input = (u1, u2)
 
     def dynamics(self, theta1, theta1_dot, theta2, theta2_dot, u1, u2):
+        theta1 += np.pi
+        theta2 += np.pi
         A = np.array([[2 * self.MASS * self.LENGTH**2, self.MASS * self.LENGTH**2 * np.cos(theta1 - theta2)],
                       [self.MASS * self.LENGTH**2 * np.cos(theta1 - theta2), self.MASS * self.LENGTH**2]])
         B = np.array([[-self.MASS * self.LENGTH**2 * theta2_dot**2 * np.sin(theta1 - theta2) - 2 * self.MASS * self.LENGTH * self.GRAVITY * np.sin(theta1) + u1 - self.DRAG * theta1_dot],
@@ -36,6 +38,9 @@ class DoublePendulum:
         return self.state
 
     def energy(self, theta1, theta1_dot, theta2, theta2_dot):
+        theta1 += np.pi
+        theta2 += np.pi
+
         y1 = -self.LENGTH * np.cos(theta1)
         y2 = -(self.LENGTH * np.cos(theta1) + self.LENGTH * np.cos(theta2))
 
