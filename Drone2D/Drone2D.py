@@ -34,6 +34,8 @@ class Drone2D:
         state_dot = (k0 + 2 * (k1 + k2) + k3)/6
         self.state = tuple(current_state + state_dot)
 
+        return state_dot
+
     def get_param(self):
         return {"mass": self.MASS,
                 "length": self.LENGTH,
