@@ -15,12 +15,17 @@ class Drone2D:
         self.state = (X, Z, theta, x_dot, z_dot, theta_dot)
         self.input = (0., 0.) # (right motor, left motor)
 
+        self.disturbance = (0, 0) # disturbance for each axis (X, Z)
+
     def dynamics(self, X, Z, theta, x_dot, z_dot, theta_dot, input):
         X_dot = x_dot * np.cos(theta) + z_dot * np.sin(theta)
         Z_dot = -x_dot * np.sin(theta) + z_dot * np.cos(theta)
-        
-        x_2dot = ( -self.MASS * self.GRAVITY * np.sin(theta) - x_dot * self.DRAG ) / self.MASS
-        z_2dot = ( -input[0] - input[1] + self.MASS * self.GRAVITY * np.cos(theta) - z_dot * self.DRAG ) / self.MASS
+
+        disturbance_x = self.disturbance[0] * np.cos(theta) - self.disturbance[1] * np.sin(theta)
+        disturbance_z = self.disturbance[0] * np.sin(theta) + self.disturbance[1] * np.cos(theta)
+
+        x_2dot = ( -self.MASS * self.GRAVITY * np.sin(theta) - x_dot * self.DRAG + disturbance_x ) / self.MASS
+        z_2dot = ( -input[0] - input[1] + self.MASS * self.GRAVITY * np.cos(theta) - z_dot * self.DRAG + disturbance_z ) / self.MASS
         theta_2dot = (input[0] * self.LENGTH - input[1] * self.LENGTH - theta_dot * self.DRAG_ROTATE) / self.INERTIA
         return np.array([X_dot, Z_dot, theta_dot, x_2dot, z_2dot, theta_2dot])
 
