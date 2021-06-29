@@ -12,7 +12,7 @@ class SingleCart:
         self.input = 0.
 
     def dynamics(self, x, x_dot, u):
-        x_2dot = (u)/self.MASS
+        x_2dot = (u)/self.MASS - x_dot * self.DRAG
         return np.array([x_dot, x_2dot])
 
     def step(self, dt):
