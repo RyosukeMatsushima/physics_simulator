@@ -14,8 +14,8 @@ class RigidBody2D(PhysicsModel):
         # set default param values
         self.name = "RigidBody2D"
         self.MASS = 0.3
-        self.DRAG = 0.001
-        self.DRAG_ROTATE = 0.001
+        self.DRAG = 0.1
+        self.DRAG_ROTATE = 0.0001
         self.INERTIA = 0.001
 
         init_input = (0.0, 0.0, 0.0)
@@ -32,7 +32,7 @@ class RigidBody2D(PhysicsModel):
         return np.array([X_dot, X_2dot, Y_dot, Y_2dot, yaw_dot, yaw_2dot])
 
     def get_param(self):
-        return {"mass": self.MASS, "drag": self.DRAG, "drag_rotate": self.DRAG_ROTATE, "inertia": self.INERTIA}}
+        return {"mass": self.MASS, "drag": self.DRAG, "drag_rotate": self.DRAG_ROTATE, "inertia": self.INERTIA}
 
     def set_param(self, **kwargs):
         for key in kwargs:
