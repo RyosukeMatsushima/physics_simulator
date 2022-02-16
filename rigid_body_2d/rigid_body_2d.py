@@ -49,3 +49,6 @@ class RigidBody2D(PhysicsModel):
                 self.INERTIA = kwargs[key]
                 continue
             raise TypeError("The required key {key!r} ""are not in kwargs".format(key=key))
+
+    def get_sensor_data(self):
+        return {'accel': [self.input[0] / self.MASS, self.input[1] / self.MASS], 'angle_rate': self.state[5]}
