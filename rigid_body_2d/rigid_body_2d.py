@@ -1,4 +1,9 @@
 import numpy as np
+import sys
+import pathlib
+
+current_dir = pathlib.Path(__file__).resolve().parent
+sys.path.append( str(current_dir) + '/../' )
 from common.physics_model import PhysicsModel
 
 # state: (X, X_dot, Y, Y_dot, yaw, yaw_dot)
