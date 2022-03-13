@@ -8,6 +8,7 @@ class PhysicsModel:
         self.GRAVITY = 9.81
 
         self.state = init_state
+        self.last_state_dot = tuple( 0.0 for i in range(len(init_state)) ) #TODO: find better way.
         self.input = init_input
 
     def dynamics(self, state, u):
@@ -27,6 +28,7 @@ class PhysicsModel:
         state_dot = (k0 + 2 * (k1 + k2) + k3)/6
         self.state = tuple(current_state + state_dot)
 
+        self.last_state_dot = state_dot
         return self.state
 
     def get_param(self):

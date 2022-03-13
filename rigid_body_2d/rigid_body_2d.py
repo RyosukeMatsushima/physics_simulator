@@ -56,4 +56,9 @@ class RigidBody2D(PhysicsModel):
             raise TypeError("The required key {key!r} ""are not in kwargs".format(key=key))
 
     def get_sensor_data(self):
-        return {'accel': [self.input[0] / self.MASS, self.input[1] / self.MASS], 'angle_rate': self.state[5]}
+        X_2dot = self.last_state_dot[1]
+        Y_2dot = self.last_state_dot[3]
+        yaw = self.state[4]
+        return {'accel': [X_2dot * np.cos(yaw) + Y_2dot * np.sin(yaw),
+                          - X_2dot * np.sin(yaw) + Y_2dot * np.cos(yaw)],
+                'angle_rate': self.state[4]}
