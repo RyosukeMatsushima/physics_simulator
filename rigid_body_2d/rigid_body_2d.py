@@ -61,4 +61,4 @@ class RigidBody2D(PhysicsModel):
         yaw = self.state[4]
         return {'accel': [X_2dot * np.cos(yaw) + Y_2dot * np.sin(yaw),
                           - X_2dot * np.sin(yaw) + Y_2dot * np.cos(yaw)],
-                'angle_rate': self.state[4]}
+                'angle_rate': self.state[5]}
