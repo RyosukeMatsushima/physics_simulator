@@ -23,7 +23,7 @@ class Dot2D(PhysicsModel):
 
         super().__init__(init_state, init_input, **kwargs)
 
-    def dynamics(self, X, Y, u):
+    def dynamics(self, states, u):
         X_dot = u[0]
         Y_dot = u[1]
 
