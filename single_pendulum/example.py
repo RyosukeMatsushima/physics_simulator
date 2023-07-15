@@ -1,4 +1,4 @@
-from SinglePendulum import SinglePendulum
+from single_pendulum import SinglePendulum
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
