@@ -20,10 +20,12 @@ class PhysicsModel:
 
     def step(self, dt):
         current_state = np.array(self.state)
-        k0 = dt * self.dynamics(*current_state, self.input)
-        k1 = dt * self.dynamics(*current_state + k0/2, self.input)
-        k2 = dt * self.dynamics(*current_state + k1/2, self.input)
-        k3 = dt * self.dynamics(*current_state + k2, self.input)
+
+        #TODO: changed *current_state -> current_state and need to adjust dynamcs functions for all models.
+        k0 = dt * self.dynamics(current_state, self.input)
+        k1 = dt * self.dynamics(current_state + k0/2, self.input)
+        k2 = dt * self.dynamics(current_state + k1/2, self.input)
+        k3 = dt * self.dynamics(current_state + k2, self.input)
 
         state_dot = (k0 + 2 * (k1 + k2) + k3)/6
         self.state = tuple(current_state + state_dot)
