@@ -14,7 +14,10 @@ class SinglePendulum(PhysicsModel):
 
         super().__init__((theta, theta_dot), 0.0, **kwargs)
 
-    def dynamics(self, theta, theta_dot, u):
+    def dynamics(self, states, u):
+        theta = states[0]
+        theta_dot = states[1]
+
         theta_2dot = ( self.LENGTH * self.MASS * self.GRAVITY * np.sin(theta)
                      - self.DRAG * theta_dot
                      + u ) / self.INERTIA
