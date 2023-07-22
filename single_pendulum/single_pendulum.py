@@ -1,9 +1,14 @@
 import numpy as np
+import sys
+import pathlib
+
+current_dir = pathlib.Path(__file__).resolve().parent
+sys.path.append( str(current_dir) + '/../' )
 from common.physics_model import PhysicsModel
 
 class SinglePendulum(PhysicsModel):
 
-    def __init__(self, theta, theta_dot, **kwargs):
+    def __init__(self, init_state, **kwargs):
 
         # set default param values
         self.name = "SinglePendulum"
@@ -12,7 +17,7 @@ class SinglePendulum(PhysicsModel):
         self.DRAG = 0.001
         self.INERTIA = (self.MASS * (2 * self.LENGTH)**2)/12
 
-        super().__init__((theta, theta_dot), 0.0, **kwargs)
+        super().__init__(init_state, 0.0, **kwargs)
 
     def dynamics(self, states, u):
         theta = states[0]

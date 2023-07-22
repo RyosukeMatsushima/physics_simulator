@@ -4,13 +4,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
-    init_theta = 0.1
+    init_theta = 3
     init_theta_dot = 0
-    singlePendulum = SinglePendulum(init_theta, init_theta_dot, mass=10, length=2, drag=4)
+    singlePendulum = SinglePendulum((init_theta, init_theta_dot))
 
     time = 0.
     dt = 10**(-2)
     max_step = 5 * 10**(2) + 1
+    singlePendulum.input = 0.1
 
     df = pd.DataFrame(columns=['time', 'theta', 'theta_dot'])
 
