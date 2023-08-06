@@ -1,11 +1,12 @@
-from DoublePendulum import DoublePendulum
+from double_pendulum import DoublePendulum
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
-    theta1, theta1_dot, theta2, theta2_dot = -2.7, 2.7, 0., 0.
-    model = DoublePendulum(theta1, theta1_dot, theta2, theta2_dot, 0., 0., mass=0.3, length=0.2, drag=0.0)
+    theta1, theta1_dot, theta2, theta2_dot = -0.0, 0.0, 0., 0.
+    model = DoublePendulum((theta1, theta1_dot, theta2, theta2_dot))
+    model.input = (1, 0)
 
     time = 0.
     dt = 10**(-2)

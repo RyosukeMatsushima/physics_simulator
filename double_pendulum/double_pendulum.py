@@ -1,19 +1,33 @@
 import numpy as np
+import sys
+import pathlib
 
-class DoublePendulum:
+current_dir = pathlib.Path(__file__).resolve().parent
+sys.path.append( str(current_dir) + '/../' )
+from common.physics_model import PhysicsModel
 
-    def __init__(self, theta1, theta1_dot, theta2, theta2_dot, u1, u2, **kwargs):
+
+class DoublePendulum(PhysicsModel):
+
+    def __init__(self, init_state, **kwargs):
         self.name = "DoublePendulum"
         self.GRAVITY = 9.81
         self.MASS = 0.3
         self.LENGTH = 0.2
-        self.DRAG = 0.001
+        self.DRAG = 0.01
         self.set_param(**kwargs)
 
-        self.state = (theta1, theta1_dot, theta2, theta2_dot)
-        self.input = (u1, u2)
+        super().__init__(init_state, (0.0, 0.0), **kwargs)
 
-    def dynamics(self, theta1, theta1_dot, theta2, theta2_dot, u1, u2):
+    def dynamics(self, states, u):
+        u1 = u[0]
+        u2 = u[1]
+
+        theta1 = states[0]
+        theta1_dot = states[1]
+        theta2 = states[2]
+        theta2_dot = states[3]
+
         theta1 += np.pi
         theta2 += np.pi
         A = np.array([[2 * self.MASS * self.LENGTH**2, self.MASS * self.LENGTH**2 * np.cos(theta1 - theta2)],
@@ -24,18 +38,6 @@ class DoublePendulum:
         angle_accels = np.dot(np.linalg.inv(A), B)
         theta1_2dot, theta2_2dot = angle_accels[0][0], angle_accels[1][0]
         return np.array([theta1_dot, theta1_2dot, theta2_dot, theta2_2dot])
-
-    def step(self, dt):
-        current_state = np.array(self.state)
-        k0 = dt * self.dynamics(*current_state, self.input[0], self.input[1])
-        k1 = dt * self.dynamics(*current_state + k0/2, self.input[0], self.input[1])
-        k2 = dt * self.dynamics(*current_state + k1/2, self.input[0], self.input[1])
-        k3 = dt * self.dynamics(*current_state + k2, self.input[0], self.input[1])
-
-        state_dot = (k0 + 2 * (k1 + k2) + k3)/6
-        self.state = tuple(current_state + state_dot)
-
-        return self.state
 
     def energy(self, theta1, theta1_dot, theta2, theta2_dot):
         theta1 += np.pi
