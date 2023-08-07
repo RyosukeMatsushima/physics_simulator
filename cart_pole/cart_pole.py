@@ -1,22 +1,32 @@
 import numpy as np
+import sys
+import pathlib
 
-class CartPole:
+current_dir = pathlib.Path(__file__).resolve().parent
+sys.path.append( str(current_dir) + '/../' )
+from common.physics_model import PhysicsModel
 
-    def __init__(self, x, x_dot, theta, theta_dot, **kwargs):
+class CartPole(PhysicsModel):
+
+    def __init__(self, init_state, **kwargs):
         self.name = "CartPole"
         self.GRAVITY = 9.81
         self.MASS_CART = 0.5
         self.MASS_POLE = 0.3
-        self.LENGTH_POLE = 0.2 # actually half the pole's length
+        self.LENGTH_POLE = 0.5 # actually half the pole's length
         self.INERTIA_POLE = (self.MASS_POLE * (2 * self.LENGTH_POLE)**2)/12
         self.DRAG_CART = 0.1
         self.DRAG_POLE = 0.01
         self.set_param(**kwargs)
 
-        self.state = (x, x_dot, theta, theta_dot)
-        self.input = 0.
+        super().__init__(init_state, 0.0, **kwargs)
 
-    def dynamics(self, x, x_dot, theta, theta_dot, u):
+    def dynamics(self, states, u):
+        x = states[0]
+        x_dot = states[1]
+        theta = states[2]
+        theta_dot = states[3]
+
         alpha = self.MASS_POLE * self.LENGTH_POLE * np.cos(theta)
         A = [[self.MASS_CART + self.MASS_POLE, alpha],
              [alpha, self.INERTIA_POLE + self.MASS_POLE * self.LENGTH_POLE**2]]
@@ -40,16 +50,6 @@ class CartPole:
         x_2dot, theta_2dot = x_2dot[0], theta_2dot[0]
 
         return np.array([x_dot, x_2dot, theta_dot, theta_2dot])
-
-    def step(self, dt):
-        current_state = np.array(self.state)
-        k0 = dt * self.dynamics(*current_state, self.input)
-        k1 = dt * self.dynamics(*current_state + k0/2, self.input)
-        k2 = dt * self.dynamics(*current_state + k1/2, self.input)
-        k3 = dt * self.dynamics(*current_state + k2, self.input)
-
-        state_dot = (k0 + 2 * (k1 + k2) + k3)/6
-        self.state = tuple(current_state + state_dot)
 
     def get_param(self):
         return {"mass_cart": self.MASS_CART,

@@ -1,4 +1,4 @@
-from CartPole import CartPole
+from cart_pole import CartPole
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -8,7 +8,7 @@ if __name__ == '__main__':
     init_x_dot = 0
     init_theta = 0.1
     init_theta_dot = 0
-    cartPole = CartPole(init_x, init_x_dot, init_theta, init_theta_dot)
+    cartPole = CartPole((init_x, init_x_dot, init_theta, init_theta_dot))
 
     time = 0.
     dt = 10**(-2)
@@ -31,5 +31,6 @@ if __name__ == '__main__':
     df.plot(x='time', y='x')
     df.plot(x='time', y='x_dot')
     df.plot(x='time', y='theta')
+    df.plot(x='time', y='theta_dot')
     plt.show()
 
