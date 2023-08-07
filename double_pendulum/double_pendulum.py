@@ -3,12 +3,11 @@ import sys
 import pathlib
 
 current_dir = pathlib.Path(__file__).resolve().parent
-sys.path.append( str(current_dir) + '/../' )
+sys.path.append(str(current_dir) + "/../")
 from common.physics_model import PhysicsModel
 
 
 class DoublePendulum(PhysicsModel):
-
     def __init__(self, init_state, **kwargs):
         self.name = "DoublePendulum"
         self.GRAVITY = 9.81
@@ -30,10 +29,40 @@ class DoublePendulum(PhysicsModel):
 
         theta1 += np.pi
         theta2 += np.pi
-        A = np.array([[2 * self.MASS * self.LENGTH**2, self.MASS * self.LENGTH**2 * np.cos(theta1 - theta2)],
-                      [self.MASS * self.LENGTH**2 * np.cos(theta1 - theta2), self.MASS * self.LENGTH**2]])
-        B = np.array([[-self.MASS * self.LENGTH**2 * theta2_dot**2 * np.sin(theta1 - theta2) - 2 * self.MASS * self.LENGTH * self.GRAVITY * np.sin(theta1) + u1 - self.DRAG * theta1_dot],
-                      [self.MASS * self.LENGTH**2 * theta1_dot**2 * np.sin(theta1 - theta2) - self.MASS * self.GRAVITY * self.LENGTH * np.sin(theta2) + u2 - self.DRAG * theta2_dot]])
+        A = np.array(
+            [
+                [
+                    2 * self.MASS * self.LENGTH**2,
+                    self.MASS * self.LENGTH**2 * np.cos(theta1 - theta2),
+                ],
+                [
+                    self.MASS * self.LENGTH**2 * np.cos(theta1 - theta2),
+                    self.MASS * self.LENGTH**2,
+                ],
+            ]
+        )
+        B = np.array(
+            [
+                [
+                    -self.MASS
+                    * self.LENGTH**2
+                    * theta2_dot**2
+                    * np.sin(theta1 - theta2)
+                    - 2 * self.MASS * self.LENGTH * self.GRAVITY * np.sin(theta1)
+                    + u1
+                    - self.DRAG * theta1_dot
+                ],
+                [
+                    self.MASS
+                    * self.LENGTH**2
+                    * theta1_dot**2
+                    * np.sin(theta1 - theta2)
+                    - self.MASS * self.GRAVITY * self.LENGTH * np.sin(theta2)
+                    + u2
+                    - self.DRAG * theta2_dot
+                ],
+            ]
+        )
 
         angle_accels = np.dot(np.linalg.inv(A), B)
         theta1_2dot, theta2_2dot = angle_accels[0][0], angle_accels[1][0]
@@ -48,10 +77,16 @@ class DoublePendulum(PhysicsModel):
 
         x1_dot = self.LENGTH * theta1_dot * np.cos(theta1)
         y1_dot = self.LENGTH * theta1_dot * np.sin(theta1)
-        x2_dot = self.LENGTH * theta1_dot * np.cos(theta1) + self.LENGTH * theta2_dot * np.cos(theta2)
-        y2_dot = self.LENGTH * theta1_dot * np.sin(theta1) + self.LENGTH * theta2_dot * np.sin(theta2)
+        x2_dot = self.LENGTH * theta1_dot * np.cos(
+            theta1
+        ) + self.LENGTH * theta2_dot * np.cos(theta2)
+        y2_dot = self.LENGTH * theta1_dot * np.sin(
+            theta1
+        ) + self.LENGTH * theta2_dot * np.sin(theta2)
 
-        T = self.MASS / 2 * (x1_dot**2 + y1_dot**2) + self.MASS / 2 * (x2_dot**2 + y2_dot**2)
+        T = self.MASS / 2 * (x1_dot**2 + y1_dot**2) + self.MASS / 2 * (
+            x2_dot**2 + y2_dot**2
+        )
         U = self.MASS * self.GRAVITY * y1 + self.MASS * self.GRAVITY * y2
 
         return T + U
@@ -70,5 +105,7 @@ class DoublePendulum(PhysicsModel):
             if key == "drag":
                 self.DRAG = kwargs[key]
                 continue
-            raise TypeError("The required key {key!r} ""are not in kwargs".format(key=key))
-        self.INERTIA = (self.MASS * (2 * self.LENGTH)**2)/12
+            raise TypeError(
+                "The required key {key!r} " "are not in kwargs".format(key=key)
+            )
+        self.INERTIA = (self.MASS * (2 * self.LENGTH) ** 2) / 12

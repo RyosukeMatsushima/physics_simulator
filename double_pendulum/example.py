@@ -3,16 +3,18 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-if __name__ == '__main__':
-    theta1, theta1_dot, theta2, theta2_dot = -0.0, 0.0, 0., 0.
+if __name__ == "__main__":
+    theta1, theta1_dot, theta2, theta2_dot = -0.0, 0.0, 0.0, 0.0
     model = DoublePendulum((theta1, theta1_dot, theta2, theta2_dot))
     model.input = (1, 0)
 
-    time = 0.
-    dt = 10**(-2)
-    max_step = 30 * 10**(2) + 1
+    time = 0.0
+    dt = 10 ** (-2)
+    max_step = 30 * 10 ** (2) + 1
 
-    df = pd.DataFrame(columns=['time', 'theta1', 'theta1_dot', 'theta2', 'theta2_dot', 'energy'])
+    df = pd.DataFrame(
+        columns=["time", "theta1", "theta1_dot", "theta2", "theta2_dot", "energy"]
+    )
 
     # def add_data(df):
 
@@ -25,9 +27,9 @@ if __name__ == '__main__':
         model.step(dt)
 
     df.to_csv("./data.csv", index=False)
-    df.plot(x='time', y='theta1')
-    df.plot(x='time', y='theta1_dot')
-    df.plot(x='time', y='theta2')
-    df.plot(x='time', y='theta2_dot')
-    df.plot(x='time', y='energy')
+    df.plot(x="time", y="theta1")
+    df.plot(x="time", y="theta1_dot")
+    df.plot(x="time", y="theta2")
+    df.plot(x="time", y="theta2_dot")
+    df.plot(x="time", y="energy")
     plt.show()
