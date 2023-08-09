@@ -1,10 +1,10 @@
-from Drone2D import Drone2D
+from drone_2d import Drone2D
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
-    drone2D = Drone2D(0, 0, 0.0, 0, 0, 0)
+    drone2D = Drone2D((0, 0, 0.0, 0, 0, 0))
     drone2D.input = (9.81 / 4, 9.81 / 4)
 
     time = 0.0

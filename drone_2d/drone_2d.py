@@ -1,8 +1,14 @@
 import numpy as np
+import sys
+import pathlib
+
+current_dir = pathlib.Path(__file__).resolve().parent
+sys.path.append(str(current_dir) + "/../")
+from common.physics_model import PhysicsModel
 
 
-class Drone2D:
-    def __init__(self, X, Z, theta, x_dot, z_dot, theta_dot, **kwargs):
+class Drone2D(PhysicsModel):
+    def __init__(self, init_state, **kwargs):
         self.name = "Drone2D"
         self.MASS = 0.5
         self.LENGTH = 0.2  # motor to center of gravity
@@ -10,14 +16,20 @@ class Drone2D:
         self.DRAG = 0.0
         self.DRAG_ROTATE = 0.0
         self.GRAVITY = 9.81
+        self.disturbance = (0, 0)  # disturbance for each axis (X, Z)
         self.set_param(**kwargs)
 
-        self.state = (X, Z, theta, x_dot, z_dot, theta_dot)
-        self.input = (0.0, 0.0)  # (right motor, left motor)
+        init_input = (0.0, 0.0)  # (right motor, left motor)
+        super().__init__(init_state, init_input, **kwargs)
 
-        self.disturbance = (0, 0)  # disturbance for each axis (X, Z)
+    def dynamics(self, states, u):
+        X = states[0]
+        Z = states[1]
+        theta = states[2]
+        x_dot = states[3]
+        z_dot = states[4]
+        theta_dot = states[5]
 
-    def dynamics(self, X, Z, theta, x_dot, z_dot, theta_dot, input):
         X_dot = x_dot * np.cos(theta) + z_dot * np.sin(theta)
         Z_dot = -x_dot * np.sin(theta) + z_dot * np.cos(theta)
 
@@ -34,30 +46,18 @@ class Drone2D:
             + disturbance_x
         ) / self.MASS
         z_2dot = (
-            -input[0]
-            - input[1]
+            -u[0]
+            - u[1]
             + self.MASS * self.GRAVITY * np.cos(theta)
             - z_dot * self.DRAG
             + disturbance_z
         ) / self.MASS
         theta_2dot = (
-            input[0] * self.LENGTH
-            - input[1] * self.LENGTH
+            u[0] * self.LENGTH
+            - u[1] * self.LENGTH
             - theta_dot * self.DRAG_ROTATE
         ) / self.INERTIA
         return np.array([X_dot, Z_dot, theta_dot, x_2dot, z_2dot, theta_2dot])
-
-    def step(self, dt):
-        current_state = np.array(self.state)
-        k0 = dt * self.dynamics(*current_state, self.input)
-        k1 = dt * self.dynamics(*current_state + k0 / 2, self.input)
-        k2 = dt * self.dynamics(*current_state + k1 / 2, self.input)
-        k3 = dt * self.dynamics(*current_state + k2, self.input)
-
-        state_dot = (k0 + 2 * (k1 + k2) + k3) / 6
-        self.state = tuple(current_state + state_dot)
-
-        return state_dot / dt
 
     def get_param(self):
         return {
