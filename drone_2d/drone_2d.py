@@ -53,9 +53,7 @@ class Drone2D(PhysicsModel):
             + disturbance_z
         ) / self.MASS
         theta_2dot = (
-            u[0] * self.LENGTH
-            - u[1] * self.LENGTH
-            - theta_dot * self.DRAG_ROTATE
+            u[0] * self.LENGTH - u[1] * self.LENGTH - theta_dot * self.DRAG_ROTATE
         ) / self.INERTIA
         return np.array([X_dot, Z_dot, theta_dot, x_2dot, z_2dot, theta_2dot])
 

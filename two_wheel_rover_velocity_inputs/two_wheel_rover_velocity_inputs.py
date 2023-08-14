@@ -12,7 +12,7 @@ class TwoWheelRover(PhysicsModel):
         # set default param values
         self.name = "TwoWheelRover"
 
-        init_inputs = (0.0, 0.0) # (velocity, rotational velocity)
+        init_inputs = (0.0, 0.0)  # (velocity, rotational velocity)
 
         super().__init__(init_state, init_inputs, **kwargs)
 
